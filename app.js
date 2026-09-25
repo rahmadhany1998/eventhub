@@ -4,6 +4,8 @@ const mysql = require("mysql2");
 require("dotenv").config();
 const { Sequelize, DataTypes } = require("sequelize");
 
+const PORT = process.env.PORT;
+
 const sequelize = new Sequelize(
   process.env.DB_NAME,
   process.env.DB_USER,
@@ -14,15 +16,6 @@ const sequelize = new Sequelize(
     logging: false,
   },
 );
-
-sequelize
-  .authenticate()
-  .then(() => {
-    console.log("Database Connected!");
-  })
-  .catch((error) => {
-    console.log("Failed Connecting to Database", error.message);
-  });
 
 //Models
 
@@ -234,3 +227,34 @@ EventAttachment.belongsTo(Event, {
   onDelete: "RESTRICT",
   onUpdate: "CASCADE",
 });
+
+//Sync All Table Models
+
+async function syncDatabase() {
+  try {
+    await sequelize.sync({ alter: true });
+    console.log("All Table Synchronized!");
+  } catch (error) {
+    console.log("Table Synchronization failed!", error);
+  }
+}
+
+//Main Server
+async function startServer() {
+  try {
+    await sequelize.authenticate();
+    console.log("Database Connected!");
+
+    //sync database
+    await syncDatabase();
+
+    //start server
+    app.listen(PORT, () => {
+      console.log(`Server started at http://localhost:${PORT}`);
+    });
+  } catch (error) {
+    console.log("Error starting the server", error);
+  }
+}
+
+startServer();
