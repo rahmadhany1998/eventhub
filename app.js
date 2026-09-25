@@ -148,3 +148,89 @@ const EventAttachment = sequelize.define(
     updatedAt: "updated_at",
   },
 );
+
+//Association
+
+User.hasMany(Event, {
+  foreignKey: "creator_id",
+  onDelete: "RESTRICT",
+  onUpdate: "CASCADE",
+});
+
+Event.belongsTo(User, {
+  foreignKey: "creator_id",
+  onDelete: "RESTRICT",
+  onUpdate: "CASCADE",
+});
+
+Category.hasMany(Event, {
+  foreignKey: "category_id",
+  onDelete: "RESTRICT",
+  onUpdate: "CASCADE",
+});
+
+Event.belongsTo(Category, {
+  foreignKey: "category_id",
+  onDelete: "RESTRICT",
+  onUpdate: "CASCADE",
+});
+
+User.hasMany(Order, {
+  foreignKey: "user_id",
+  onDelete: "RESTRICT",
+  onUpdate: "CASCADE",
+});
+
+Order.belongsTo(User, {
+  foreignKey: "user_id",
+  onDelete: "RESTRICT",
+  onUpdate: "CASCADE",
+});
+
+Event.hasMany(Order, {
+  foreignKey: "event_id",
+  onDelete: "RESTRICT",
+  onUpdate: "CASCADE",
+});
+
+Order.belongsTo(Event, {
+  foreignKey: "event_id",
+  onDelete: "RESTRICT",
+  onUpdate: "CASCADE",
+});
+
+Order.hasMany(Ticket, {
+  foreignKey: "order_id",
+  onDelete: "RESTRICT",
+  onUpdate: "CASCADE",
+});
+
+Ticket.belongsTo(Order, {
+  foreignKey: "order_id",
+  onDelete: "RESTRICT",
+  onUpdate: "CASCADE",
+});
+
+Event.hasMany(Ticket, {
+  foreignKey: "event_id",
+  onDelete: "RESTRICT",
+  onUpdate: "CASCADE",
+});
+
+Ticket.belongsTo(Event, {
+  foreignKey: "event_id",
+  onDelete: "RESTRICT",
+  onUpdate: "CASCADE",
+});
+
+Event.hasMany(EventAttachment, {
+  foreignKey: "event_id",
+  onDelete: "RESTRICT",
+  onUpdate: "CASCADE",
+});
+
+EventAttachment.belongsTo(Event, {
+  foreignKey: "event_id",
+  onDelete: "RESTRICT",
+  onUpdate: "CASCADE",
+});
