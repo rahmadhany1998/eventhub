@@ -4,6 +4,7 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>EventHub - Platform Event Terbaik</title>
+    <script src="https://cdn.tailwindcss.com"></script>
     <link
       rel="stylesheet"
       href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
@@ -31,20 +32,22 @@
 
           <div class="hidden md:flex items-center space-x-8">
             <a href="/" class="text-gray-700 hover:text-indigo-600">Home</a>
-            <a href="/events" class="text-gray-700 hover:text-indigo-600"
-              >Events</a
-            >
-
-            <div class="relative group">
+            <a href="/events" class="text-gray-700 hover:text-indigo-600">Events</a>
+            <% if (user) { %>
+              <% if (user.role === 'creator') { %>
+                <a href="/events/create" class="text-gray-700 hover:text-indigo-600">Create Event</a>
+                <a href="/my-events" class="text-gray-700 hover:text-indigo-600">My Event</a>
+              <% } %>
+              <div class="relative group">
               <button
                 class="flex items-center text-gray-700 hover:text-indigo-600 space-x-2"
               >
                 <img
-                  src="https://ui-avatars.com/api/?name=User&background=4f46e5&color=ffffff&rounded=true&size=32&bold=true"
-                  alt="User"
+                  src="https://ui-avatars.com/api/?name=<%= user.name %>&background=4f46e5&color=ffffff&rounded=true&size=32&bold=true"
+                  alt="<%= user.name %>"
                   class="w-8 h-8 rounded-full border-2 border-indigo-100 shadow-sm"
                 />
-                <span>User Name</span>
+                <span><%= user.name %></span>
                 <svg
                   class="w-4 h-4 ml-1"
                   fill="none"
@@ -66,12 +69,12 @@
                   class="px-4 py-2 flex items-center space-x-2 border-b border-gray-100"
                 >
                   <img
-                    src="https://ui-avatars.com/api/?name=User&background=4f46e5&color=ffffff&rounded=true&size=32&bold=true"
-                    alt="User"
+                    src="https://ui-avatars.com/api/?<%= user.name %>&background=4f46e5&color=ffffff&rounded=true&size=32&bold=true"
+                    alt="<%= user.name %>"
                     class="w-8 h-8 rounded-full"
                   />
                   <div class="text-sm font-medium text-gray-700 truncate">
-                    User Name
+                    <%= user.name %>
                   </div>
                 </div>
                 <a
@@ -87,13 +90,15 @@
                   <i class="fas fa-ticket-alt mr-2 text-indigo-500"></i>Pesanan
                   Saya
                 </a>
-                <a
+                <% if (user.role === 'creator') { %>
+                  <a
                   href="/my-events"
                   class="block px-4 py-2 text-sm text-gray-700 hover:bg-indigo-50 hover:text-indigo-700 transition-colors duration-150"
                 >
                   <i class="fas fa-calendar-alt mr-2 text-indigo-500"></i>Event
                   Saya
                 </a>
+                <% } %>
                 <div class="border-t border-gray-100 mt-1 pt-1">
                   <form method="POST" action="/logout" class="w-full">
                     <button
@@ -107,6 +112,10 @@
                 </div>
               </div>
             </div>
+            <% } else { %>
+              <a href="/login" class="text-gray-700 hover:text-indigo-600">Login</a>
+              <a href="/register" class="bg-indigo-600 text-white px-4 py-2 rounded-lg hover:bg-indigo-600 transition-colors duration-200">Register</a>
+              <% } %>
           </div>
         </div>
       </div>
